@@ -1,0 +1,4 @@
+CC = clang
+XX = clang++
+
+
