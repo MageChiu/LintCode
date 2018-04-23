@@ -35,6 +35,7 @@ do
     echo "test file is : "$test_u 
     echo "result is :"
     ./${BIN_PATH}/test_hello < ${test_u} 2>&1
+    echo "========================================="
 done
 echo "make clean"
 make -f Makefile.test clean src_file=$SRC_FILE test_dir=$BIN_PATH test_file=LintCode_test.cpp
