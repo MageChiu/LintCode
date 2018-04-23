@@ -112,3 +112,66 @@ public:
 ```
 
 >[测试数据](https://github.com/MageChiu/LintCode/tree/master/test/test0046)
+
+
+
+# 81. medianII 数据流中位数 
+## 题目链接
+[LintCode81. 数据流中位数 ](https://www.lintcode.com/zh-cn/problem/data-stream-median/)
+## 题目描述
+
+数字是不断进入数组的，在每次添加一个新的数进入数组的同时返回当前新数组的中位数。
+ 
+1. 说明  
+中位数的定义：  
+中位数是排序后数组的中间值，如果有数组中有n个数，则中位数为A[(n-1)/2]。  
+比如：数组A=[1,2,3]的中位数是2，数组A=[1,19]的中位数是1。  
+2. 样例  
+持续进入数组的数的列表为：[1, 2, 3, 4, 5]，则返回[1, 1, 2, 2, 3]  
+持续进入数组的数的列表为：[4, 5, 1, 3, 2, 6, 0]，则返回 [4, 4, 4, 3, 3, 3, 3]  
+持续进入数组的数的列表为：[2, 20, 100]，则返回[2, 2, 20]
+
+3. 挑战   
+时间复杂度为O(nlogn)
+
+## 分析
+这个比较涉及工程，直接使用两个优先级队列就行了。
+## 代码
+[github](https://github.com/MageChiu/LintCode/blob/master/cpp/LintCode0081_medianII.hpp)
+``` cpp
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers
+     * @return: the median of numbers
+     */
+    vector<int> medianII(vector<int> &nums) {
+        // write your code here
+        priority_queue<int, vector<int>, less<int>> q1;
+        priority_queue<int, vector<int>, greater<int>> q2;
+        vector<int> ret_nums;
+        ret_nums.reserve(nums.size());
+        for(int i = 0 ; i < nums.size(); i++)
+        {
+            // cnt nums is i+1;
+            if(q1.size() == q2.size())
+            {
+                q2.push(nums[i]);
+                int tmp = q2.top();
+                q2.pop();
+                q1.push(tmp);
+            }
+            else
+            {
+                q1.push(nums[i]);
+                int tmp = q1.top();
+                q1.pop();
+                q2.push(tmp);
+            }
+            ret_nums.push_back(q1.top());
+        }
+        return  ret_nums;
+    }
+};
+```
+>[测试数据](https://github.com/MageChiu/LintCode/tree/master/test/test0081)
