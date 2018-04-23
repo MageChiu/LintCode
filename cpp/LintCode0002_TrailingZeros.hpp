@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  LintCode0002_TrailingZeros.cpp
+ *       Filename:  LintCode0002_TrailingZeros.hpp
  *
  *    Description:  
  *

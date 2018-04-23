@@ -1,0 +1,50 @@
+CC = gcc
+XX = g++
+
+TEST_DIR=$(test_dir)
+SRC_FILE=$(src_file)
+TEST_FILE=$(test_file)
+SRC_DIR = ./cpp
+BIN_DIR = $(TEST_DIR)
+
+TARGET_NAME = test_hello
+INC = -I./cpp -I./base
+TARGET = $(BIN_DIR)/$(TARGET_NAME)
+CFLAGS = -g $(INC)
+CFLAGSXX= $(CFLAGS) -std=c++11
+
+#$(BIN_DIR)/%.o:$(SRC_DIR)/%.cpp
+#	$(XX) $(CFLAGSXX) -c $< -o $@
+#
+#$(BIN_DIR)/%.o:$(SRC_DIR)/%.c
+#	$(CC) $(CFLAGS) -c $< -o $@
+#
+
+T_OBJS = $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(TEST_FILE)))
+S_OBJS = $(patsubst %.c,%.o,$(patsubst %.hpp,%.o,$(SRC_FILE)))
+# OBJS = $(BIN_DIR)/$(T_OBJS) $(BIN_DIR)/$(S_OBJS)
+OBJS = $(BIN_DIR)/$(T_OBJS) 
+
+$(BIN_DIR)/$(S_OBJS):$(SRC_DIR)/$(SRC_FILE)
+	$(XX) $(CFLAGSXX) -c $< -o $@
+
+$(BIN_DIR)/$(T_OBJS):$(BIN_DIR)/$(TEST_FILE)
+	$(XX) $(CFLAGSXX) -c $< -o $@
+
+$(TARGET):$(OBJS)
+	@echo "make $@ by $^ ..."
+	$(XX) $^ -o $@ $(CFLAGSXX)
+
+all:$(TARGET)
+	@echo "make all"
+
+test:$(TARGET)
+	@echo "run test"
+	./$(TARGET)
+
+clean:
+	@echo "clean ..."
+	$(RM) $(OBJS) $(TARGET)
+
+
+
